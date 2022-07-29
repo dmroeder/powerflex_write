@@ -10,9 +10,7 @@ from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import ttk
 
-"""
-A collection of tools, mainly around the Logix L5X file.
-"""
+
 class Window(tk.Frame):
 
     def __init__(self, main=None):
@@ -161,6 +159,7 @@ class Window(tk.Frame):
         """
         self.log.info("GUI - User exit requested")
         exit()
+
 
 root = tk.Tk()
 root.geometry("460x200")
