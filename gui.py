@@ -63,13 +63,17 @@ class Window(tk.Frame):
 
         # frame for file/open
         self.frame1 = tk.LabelFrame(self.main, text="Choose L5X")
-        self.frame1.pack(fill=tk.X, padx=5, pady=5)
+        self.frame1.pack(fill=tk.BOTH, padx=5, pady=5)
 
         self.l5x_entry = tk.Entry(self.frame1, textvariable=self.l5x_file)
-        self.l5x_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.l5x_entry.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
 
         self.open = tk.Button(self.frame1, text="...", command=self.file_open)
-        self.open.pack(padx=5, pady=5)
+        self.open.pack(side=tk.LEFT, expand=tk.NO, padx=5, pady=5)
+
+        self.start_vfd = tk.Button(self.frame1, text="Generate VFD Files", command=self.generate_vfd)
+        self.start_vfd.pack(side=tk.BOTTOM, padx=5, pady=5)
+        self.start_vfd['state'] = 'disabled'
 
         # frame for writing VFD parameters
         self.frame3 = tk.LabelFrame(self.main, text="Write VFD")
@@ -110,9 +114,15 @@ class Window(tk.Frame):
             self.l5x_file.set(self.file_name)
             self.log.info("GUI - File {} parsed".format(self.file_name))
 
-            self.start_io['state'] = 'normal'
             self.start_vfd['state'] = 'normal'
-            self.start_phenolic['state'] = 'normal'
+
+    def generate_vfd(self):
+        """
+        Generate files for writing IP address to VFDs
+        """
+        self.log.info("GUI - Generate VFD files requested")
+        self.parser.generate_vfd_files(self.file_name)
+        messagebox.showinfo("Information","VFD files generated")
 
     def write_vfd(self):
         """
