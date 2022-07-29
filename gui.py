@@ -6,7 +6,6 @@ import serial.tools.list_ports
 import subprocess
 import tkinter as tk
 
-from PyPDF2 import PdfFileMerger
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import ttk
@@ -20,27 +19,14 @@ class Window(tk.Frame):
         tk.Frame.__init__(self, main)
         self.main = main
 
-        # run capture screenshot loop
-        self.run = True
-
         self.l5x_file = tk.StringVar()
         self.l5x_file.set("")
-
 
         self.port_val = tk.StringVar()
         self.port_val.set("")
 
         self.output_val = tk.StringVar()
         self.output_val.set("output/")
-
-        self.plc_ip = tk.StringVar()
-        self.plc_ip.set("192.168.1.10")
-
-        self.h_var = tk.StringVar()
-        self.h_var.set("600")
-
-        self.w_var = tk.StringVar()
-        self.w_var.set("800")
 
         self.file_name = self.l5x_file.get()
 
@@ -61,7 +47,7 @@ class Window(tk.Frame):
     def init_window(self):
         self.log.info("GUI - Initializing UI")
         # update title
-        self.main.title("Py Tools")
+        self.main.title("Write Powerflex Parameters")
 
         # create a menu
         menu = tk.Menu(self.main)
@@ -72,7 +58,6 @@ class Window(tk.Frame):
         file.add_command(label="Open L5X", command=self.file_open)
         file.add_command(label="Open Log", command=self.open_log)
         file.add_command(label="Refresh Com", command=self.refresh_com)
-        #file.add_command(label="Add PDFs", command=self.add_pdf)
         file.add_command(label="Exit", command=self.close)
         menu.add_cascade(label="File", menu=file)
 
@@ -105,7 +90,6 @@ class Window(tk.Frame):
 
         self.write_parm = tk.Button(self.frame3, text="Write VFD Parameters", command=self.write_vfd)
         self.write_parm.grid(row=2, column=0, padx=5, pady=5)
-
 
         self.log.info("GUI - UI Loaded")
 
