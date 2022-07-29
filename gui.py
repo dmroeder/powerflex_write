@@ -163,7 +163,7 @@ class Window(tk.Frame):
         exit()
 
 root = tk.Tk()
-root.geometry("460x480")
+root.geometry("460x200")
 root.resizable(False, False)
 app = Window(root)
 root.mainloop()
