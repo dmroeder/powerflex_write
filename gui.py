@@ -91,6 +91,9 @@ class Window(tk.Frame):
         self.write_parm = tk.Button(self.frame3, text="Write VFD Parameters", command=self.write_vfd)
         self.write_parm.grid(row=2, column=0, padx=5, pady=5)
 
+        self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
+        self.refresh_com.grid(row=2, column=1, padx=5, pady=5)
+
         self.log.info("GUI - UI Loaded")
 
     def file_open(self):
