@@ -125,8 +125,7 @@ class Window(tk.Frame):
         self.files_list = tk.Listbox(self.frame4, listvariable=self.files)
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
 
-        for f in self.files:
-            self.files_list.insert(tk.END, f)
+        self.refresh_file_list()
 
         self.log.info("GUI - UI Loaded")
 
@@ -153,6 +152,15 @@ class Window(tk.Frame):
         self.log.info("GUI - Generate VFD files requested")
         self.parser.generate_vfd_files(self.file_name)
         messagebox.showinfo("Information","VFD files generated")
+        self.refresh_file_list()
+
+    def refresh_file_list(self):
+        """
+        Clear out our file list, then refresh it
+        """
+        self.files_list.delete(0,tk.END)
+        for f in self.files:
+            self.files_list.insert(tk.END, f)
 
     def write_vfd(self):
         """
