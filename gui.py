@@ -50,13 +50,13 @@ class Window(tk.Frame):
         self.file_name = self.l5x_file.get()
 
         self.parser = powerflex_write.parser.Parse(self)
-        self.writer = powerflex_write.vfd.Writer(self)
-
-        self.files = self.get_vfd_files()      
+        self.writer = powerflex_write.vfd.Writer(self)     
 
         # make the output directory to put generated files
         if not os.path.exists("output"):
             os.mkdir("output")
+
+        self.files = self.get_vfd_files() 
 
         self.log_file = "{}logjammin.log".format(self.output_val.get())
         logging.basicConfig(filename=self.log_file, filemode="w", format='%(asctime)s - %(message)s')
