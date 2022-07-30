@@ -45,10 +45,14 @@ class Window(tk.Frame):
         self.output_val = tk.StringVar()
         self.output_val.set("output/")
 
+        self.files = tk.StringVar()
+
         self.file_name = self.l5x_file.get()
 
         self.parser = powerflex_write.parser.Parse(self)
         self.writer = powerflex_write.vfd.Writer(self)
+
+        self.files = self.get_vfd_files()      
 
         # make the output directory to put generated files
         if not os.path.exists("output"):
@@ -94,7 +98,7 @@ class Window(tk.Frame):
 
         # frame for writing VFD parameters
         self.frame3 = tk.LabelFrame(self.main, text="Write VFD")
-        self.frame3.pack(fill=tk.X, padx=5, pady=5)
+        self.frame3.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
         self.com_lbl = tk.Label(self.frame3, text="COM Port:")
         self.com_lbl.grid(row=0, column=0, pady=2, sticky="e")
@@ -114,6 +118,15 @@ class Window(tk.Frame):
 
         self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
         self.refresh_com.grid(row=2, column=1, padx=5, pady=5)
+
+        self.frame4 = tk.LabelFrame(self.main, text="Files")
+        self.frame4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        self.files_list = tk.Listbox(self.frame4, listvariable=self.files)
+        self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
+
+        for f in self.files:
+            self.files_list.insert(tk.END, f)
 
         self.log.info("GUI - UI Loaded")
 
@@ -165,6 +178,19 @@ class Window(tk.Frame):
         except:
             pass
 
+    def get_vfd_files(self):
+        """
+        Find all text files in the current directory
+        and return them as a list
+        """
+        drive_files = []
+        for text_file in os.listdir(self.output_val.get()):
+            if text_file.endswith('.vfd'):
+                drive_files.append(text_file)
+
+        drive_files.sort()
+        return drive_files
+
     def open_log(self):
         """
         Open log file from menu
@@ -181,7 +207,7 @@ class Window(tk.Frame):
 
 
 root = tk.Tk()
-root.geometry("460x200")
+root.geometry("460x360")
 root.resizable(False, False)
 app = Window(root)
 root.mainloop()
