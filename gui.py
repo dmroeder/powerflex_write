@@ -167,7 +167,15 @@ class Window(tk.Frame):
         Write VFD parameters from generated files
         """
         self.log.info("GUI - Write VFD parameters requested")
-        self.writer.write(self.port_val.get(), self.output_dir.get())
+        self.writer.write(self.port_val.get(), self.output_dir.get(), self.write_callback)
+
+    def write_callback(self, name):
+        """
+        Called each time a drive is successfully written to.
+        Delete the name from the list
+        """
+        idx = self.files_list.get(0, tk.END).index(name)
+        self.files_list.delete(idx)
 
     def refresh_com(self):
         """

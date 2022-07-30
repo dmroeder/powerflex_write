@@ -38,7 +38,7 @@ class Writer:
     def __init__(self, parent):
         self.parent = parent
 
-    def write(self, com_port, path):
+    def write(self, com_port, path, callback):
 
         self.com_port = com_port
         self.path = path
@@ -54,6 +54,7 @@ class Writer:
         except:
             self.parent.log.info("Writer - Failed to open {}, quitting".format(com_port))
 
+        self.callback = callback
         # process all of the drive files
         n = self._process_drives()
 
@@ -87,6 +88,7 @@ class Writer:
                 else:
                     try:
                         os.rename(p1, p2)
+                        self.callback(drive)
                         retry = False
                     except OSError:
                         self.parent.log.info("Writer - File {} already exists in completed directory".format(drive))
