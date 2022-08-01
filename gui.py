@@ -19,9 +19,7 @@ under the License.
 
 import logging
 import os
-import powerflex_write.enhanced_listbox
-import powerflex_write.parser
-import powerflex_write.vfd
+import powerflex_write as pfw
 import serial.tools.list_ports
 import subprocess
 import tkinter as tk
@@ -50,8 +48,8 @@ class Window(tk.Frame):
         self.file_name = self.l5x_file.get()
         #self.selected_file = ""
 
-        self.parser = powerflex_write.parser.Parse(self)
-        self.writer = powerflex_write.vfd.Writer(self)     
+        self.parser = pfw.parser.Parse(self)
+        self.writer = pfw.vfd.Writer(self)     
 
         # make the output directory to put generated files
         if not os.path.exists("output"):
@@ -123,7 +121,7 @@ class Window(tk.Frame):
         self.frame4 = tk.LabelFrame(self.main, text="Files")
         self.frame4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        self.files_list = powerflex_write.enhanced_listbox.EnhancedListbox(self, self.frame4, selectmode="multiple")
+        self.files_list = pfw.enhanced_listbox.EnhancedListbox(self, self.frame4, selectmode="multiple")
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
         self.refresh_file_list()
 
