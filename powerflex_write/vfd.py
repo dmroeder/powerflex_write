@@ -70,6 +70,11 @@ class Writer:
             self.parent.log.info("Writer - creating completed directory")
             os.makedirs(self.completed_dir)
 
+        if not drive_list:
+            self.parent.log.info("Writer - No files to write")
+            messagebox.showinfo("Information", "No files to write!")
+            return
+
         for drive in drive_list:
             while retry:
                 # prompt the user to plug into a drive
