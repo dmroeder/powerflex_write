@@ -46,8 +46,8 @@ class Window(tk.Frame):
         self.output_val.set("output/")
 
         self.files = tk.StringVar()
-
         self.file_name = self.l5x_file.get()
+        self.selected_file = ""
 
         self.parser = powerflex_write.parser.Parse(self)
         self.writer = powerflex_write.vfd.Writer(self)     
@@ -124,6 +124,7 @@ class Window(tk.Frame):
 
         self.files_list = tk.Listbox(self.frame4, listvariable=self.files)
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
+        self.files_list.bind("<<ListboxSelect>>", self.on_select)
 
         self.refresh_file_list()
 
@@ -207,6 +208,16 @@ class Window(tk.Frame):
 
         drive_files.sort()
         return drive_files
+
+    def on_select(self, event):
+        """
+        Handle when an item is selected in the list box
+        """
+        selection = event.widget.curselection()
+        if selection:
+            index = selection[0]
+            data = event.widget.get(index)
+            self.selected_file = data
 
     def open_log(self):
         """
