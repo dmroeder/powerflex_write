@@ -112,7 +112,7 @@ class Window(tk.Frame):
         self.output_dir = tk.Entry(self.frame3, textvariable=self.output_val)
         self.output_dir.grid(row=1, column=1, pady=2, sticky="w")
 
-        self.write_parm = tk.Button(self.frame3, text="Write VFD Parameters", command=self.write_vfd)
+        self.write_parm = tk.Button(self.frame3, text="Write All Parameter Files", command=self.write_vfd)
         self.write_parm.grid(row=2, column=0, padx=5, pady=5)
 
         self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
