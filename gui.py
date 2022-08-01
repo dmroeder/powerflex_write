@@ -159,6 +159,7 @@ class Window(tk.Frame):
         Clear out our file list, then refresh it
         """
         self.files_list.delete(0,tk.END)
+        self.files = self.get_vfd_files() 
         for f in self.files:
             self.files_list.insert(tk.END, f)
 
