@@ -38,12 +38,12 @@ class Writer:
     def __init__(self, parent):
         self.parent = parent
 
-    def write(self, com_port, path, callback):
-
-        self.com_port = com_port
-        self.path = path
+        self.com_port = self.parent.port_val.get()
+        self.path = self.parent.output_dir.get()
         self.current_dir = os.path.abspath(os.getcwd() + "/" + self.path) 
         self.completed_dir = os.path.abspath(self.current_dir + '/completed')
+
+    def write(self, callback):
 
         try:
             self.parent.log.info("Writer - Starting connection to drive")
@@ -57,6 +57,26 @@ class Writer:
         self.callback = callback
         # process all of the drive files
         n = self._process_drives()
+
+    def write_single_drive(self, drive):
+
+        p1 = os.path.abspath(self.current_dir + '/' + drive)
+        p2 = os.path.abspath(self.completed_dir + '/' + drive)
+
+        result = self._parse_file(p1)
+
+        if result == True:
+            # failed to write, notify the user
+            self.parent.log.info("Writer - Failed to write to {}. Make sure there were no typo's in the file".format(drive[:-4]))
+            retry = self._yes_or_no()
+        else:
+            try:
+                os.rename(p1, p2)
+                self.callback(drive)
+                retry = False
+            except OSError:
+                self.parent.log.info("Writer - File {} already exists in completed directory".format(drive))
+                retry = False
 
     def _process_drives(self):
         """

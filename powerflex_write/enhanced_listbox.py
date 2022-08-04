@@ -7,6 +7,7 @@ class EnhancedListbox(tk.Listbox):
         super(EnhancedListbox, self).__init__()
 
         self.selected_file = ""
+        self.parent = parent
 
         self.popup_menu = tk.Menu(self, tearoff=0)
         self.popup_menu.add_command(label="Write", command=self.write_file)
@@ -41,4 +42,4 @@ class EnhancedListbox(tk.Listbox):
         """
         for i in self.curselection()[::-1]:
             data = self.get(i)
-            print(data)
+            self.parent.writer.write_single_drive(data)

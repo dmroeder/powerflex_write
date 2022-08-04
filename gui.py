@@ -46,10 +46,6 @@ class Window(tk.Frame):
 
         self.files = tk.StringVar()
         self.file_name = self.l5x_file.get()
-        #self.selected_file = ""
-
-        self.parser = pfw.parser.Parse(self)
-        self.writer = pfw.vfd.Writer(self)     
 
         # make the output directory to put generated files
         if not os.path.exists("output"):
@@ -125,7 +121,10 @@ class Window(tk.Frame):
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
         self.refresh_file_list()
 
-        self.log.info("GUI - UI Loaded")
+        self.parser = pfw.parser.Parse(self)
+        self.writer = pfw.vfd.Writer(self)
+
+        self.log.info("GUI - UI Loaded v{}".format(pfw.__version__))
 
     def file_open(self):
         """
@@ -166,7 +165,7 @@ class Window(tk.Frame):
         Write VFD parameters from generated files
         """
         self.log.info("GUI - Write VFD parameters requested")
-        self.writer.write(self.port_val.get(), self.output_dir.get(), self.write_callback)
+        self.writer.write(self.write_callback)
 
     def write_callback(self, name):
         """
