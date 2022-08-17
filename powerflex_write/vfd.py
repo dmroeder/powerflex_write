@@ -38,14 +38,17 @@ class Writer:
     def __init__(self, parent):
         self.parent = parent
 
-        self.com_port = self.parent.port_val.get()
+
         self.path = self.parent.output_dir.get()
         self.current_dir = os.path.abspath(os.getcwd() + "/" + self.path) 
         self.completed_dir = os.path.abspath(self.current_dir + '/completed')
 
     def write(self, callback):
 
+        self.callback = callback
+
         try:
+            self.com_port = self.parent.port_val.get()
             self.parent.log.info("Writer - Starting connection to drive")
             self.comm = minimalmodbus.Instrument(self.com_port, 100)
             self.comm.serial.baudrate = 9600
@@ -54,7 +57,6 @@ class Writer:
         except:
             self.parent.log.info("Writer - Failed to open {}, quitting".format(com_port))
 
-        self.callback = callback
         # process all of the drive files
         n = self._process_drives()
 
