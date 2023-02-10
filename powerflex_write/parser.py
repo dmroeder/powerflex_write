@@ -37,6 +37,8 @@ Enter on the keyboard.
 VFD output files contain the VFD IP Address, formatted to writing the parameters
 to the VFD using the RS485 cable and the DSI port.
 """
+
+
 class Parse:
 
     def __init__(self, parent):
@@ -55,9 +57,9 @@ class Parse:
     def generate_io_list(self, file_name):
         self.file_name = file_name
         self.prj = l5x.Project(self.file_name)
-        # retreive the tags that are important to us
+        # retrieve the tags that are important to us
         tags = self._get_tags()
-        # get all of the I/O modules used by our tags
+        # get all the I/O modules used by our tags
         mods = self._get_io_modules()
         # generate an I/O list based on the modules and tags
         self._generate_list(mods, tags)
@@ -81,7 +83,7 @@ class Parse:
 
     def generate_vfd_files(self, file_name):
         """
-        Get a list of all of the VFD's and generate parameter
+        Get a list of all the VFDs and generate parameter
         list files for them
         """
         self.file_name = file_name
@@ -92,7 +94,7 @@ class Parse:
                 vfd_name = m
                 vfd_address = self.prj.modules[m].ports[2].address
                 vfds.append((vfd_name, vfd_address))
-        self.parent.log.info("Parser - VFD's retrieved from L5X")
+        self.parent.log.info("Parser - VFDs retrieved from L5X")
         self._vfd_file(vfds)
 
     def _get_tags(self):
@@ -108,7 +110,7 @@ class Parse:
         for name in tag_names:
             try:
                 d[tags[name].alias_for] = name
-            except:
+            except (Exception, ):
                 pass
 
         od = OrderedDict(sorted(d.items()))
@@ -124,11 +126,11 @@ class Parse:
         for m in self.prj.modules.names:
             x = re.search("Rack[0-9]+Slot[0-9]+", m)
             if x:
-                cat_num = self.prj.modules[m].ports[1].type
+                # cat_num = self.prj.modules[m].ports[1].type
                 try:
                     snn = self.prj.modules[m].snn
                     snn = "safety"
-                except:
+                except (Exception, ):
                     snn = "standard"
                 rack = int(m[4:5])
                 slot = int(self.prj.modules[m].ports[1].address)
@@ -146,13 +148,13 @@ class Parse:
         self.parent.log.info("Parser - Creating the I/O list output file")
         with open("output/io_list.txt", "w") as f:
             for module in modules:
-                l = "{}\n".format(module.name)
-                f.write(l)
+                line = "{}\n".format(module.name)
+                f.write(line)
                 for i in range(8):
                     tag = self._get_tag_from_alias(module, i, addresses)
 
-                    l = "{}\t{}\n".format(i+1, tag)
-                    f.write(l)
+                    line = "{}\t{}\n".format(i+1, tag)
+                    f.write(line)
                 f.write("\n")
         self.parent.log.info("Parser - I/O list created")
 
@@ -231,8 +233,8 @@ class Parse:
 
         # write the rung text to a file
         with open("output/rung_text.txt", "w") as f:
-            for l in txt:
-                f.write(l)
+            for line in txt:
+                f.write(line)
         self.parent.log.info("Parser - Rung text output file generated")
 
     def _vfd_file(self, modules):
@@ -245,7 +247,7 @@ class Parse:
             addr = m[1].split(".")
             tmp = m[0].split("_")
             fn = "output/{}_{}_{}.vfd".format(tmp[0], addr[3], tmp[1])
-            #fn = "output/{}.txt".format(m[0])
+            # fn = "output/{}.txt".format(m[0])
             with open(fn, "w") as f:
                 f.write("*PF525\n")
                 f.write("128:En Addr Sel:1\n")
@@ -258,6 +260,7 @@ class Parse:
                 f.write("135:En Subnet Cfg 3:255\n")
 
         self.parent.log.info("Parser - {} VFD files generated".format(len(modules)))
+
 
 class Module:
 

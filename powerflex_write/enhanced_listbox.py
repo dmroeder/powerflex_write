@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class EnhancedListbox(tk.Listbox):
 
     def __init__(self, parent, *args, **kwargs):

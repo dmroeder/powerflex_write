@@ -58,12 +58,31 @@ class Window(tk.Frame):
         self.log = logging.getLogger()
         self.log.setLevel(logging.DEBUG)
 
+        self.frame1 = tk.LabelFrame(self.main, text="Choose L5X")
+        self.l5x_entry = tk.Entry(self.frame1, textvariable=self.l5x_file)
+        self.open = tk.Button(self.frame1, text="...", command=self.file_open)
+        self.start_vfd = tk.Button(self.frame1, text="Generate VFD Files", command=self.generate_vfd)
+
+        self.frame3 = tk.LabelFrame(self.main, text="Write VFD")
+        self.com_lbl = tk.Label(self.frame3, text="COM Port:")
+        self.com_port = ttk.Combobox(self.frame3, textvariable=self.port_val)
+        self.out_lbl = tk.Label(self.frame3, text="Output Dir:")
+        self.output_dir = tk.Entry(self.frame3, textvariable=self.output_val)
+        self.write_parm = tk.Button(self.frame3, text="Write All Parameter Files", command=self.write_vfd)
+        self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
+
+        self.frame4 = tk.LabelFrame(self.main, text="Files")
+        self.files_list = pfw.enhanced_listbox.EnhancedListbox(self, self.frame4, selectmode="multiple")
+
+        self.parser = pfw.parser.Parse(self)
+        self.writer = pfw.vfd.Writer(self)
+
         self.init_window()
 
     def init_window(self):
         self.log.info("GUI - Initializing UI")
         # update title
-        self.main.title("Write Powerflex Parameters")
+        self.main.title("Write Power-flex Parameters")
 
         # create a menu
         menu = tk.Menu(self.main)
@@ -78,51 +97,25 @@ class Window(tk.Frame):
         menu.add_cascade(label="File", menu=file)
 
         # frame for file/open
-        self.frame1 = tk.LabelFrame(self.main, text="Choose L5X")
         self.frame1.pack(fill=tk.BOTH, padx=5, pady=5)
-
-        self.l5x_entry = tk.Entry(self.frame1, textvariable=self.l5x_file)
         self.l5x_entry.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=5)
-
-        self.open = tk.Button(self.frame1, text="...", command=self.file_open)
         self.open.pack(side=tk.LEFT, expand=tk.NO, padx=5, pady=5)
-
-        self.start_vfd = tk.Button(self.frame1, text="Generate VFD Files", command=self.generate_vfd)
         self.start_vfd.pack(side=tk.BOTTOM, padx=5, pady=5)
         self.start_vfd['state'] = 'disabled'
 
         # frame for writing VFD parameters
-        self.frame3 = tk.LabelFrame(self.main, text="Write VFD")
         self.frame3.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
-
-        self.com_lbl = tk.Label(self.frame3, text="COM Port:")
         self.com_lbl.grid(row=0, column=0, pady=2, sticky="e")
-
-        self.com_port = ttk.Combobox(self.frame3, textvariable=self.port_val)
         self.com_port.grid(row=0, column=1, pady=2, sticky="w")
         self.refresh_com()
-
-        self.out_lbl = tk.Label(self.frame3, text="Output Dir:")
         self.out_lbl.grid(row=1, column=0, pady=2, stick="e")
-
-        self.output_dir = tk.Entry(self.frame3, textvariable=self.output_val)
         self.output_dir.grid(row=1, column=1, pady=2, sticky="w")
-
-        self.write_parm = tk.Button(self.frame3, text="Write All Parameter Files", command=self.write_vfd)
         self.write_parm.grid(row=2, column=0, padx=5, pady=5)
-
-        self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
         self.refresh_com.grid(row=2, column=1, padx=5, pady=5)
 
-        self.frame4 = tk.LabelFrame(self.main, text="Files")
         self.frame4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
-
-        self.files_list = pfw.enhanced_listbox.EnhancedListbox(self, self.frame4, selectmode="multiple")
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
         self.refresh_file_list()
-
-        self.parser = pfw.parser.Parse(self)
-        self.writer = pfw.vfd.Writer(self)
 
         self.log.info("GUI - UI Loaded v{}".format(pfw.__version__))
 
@@ -148,14 +141,14 @@ class Window(tk.Frame):
         """
         self.log.info("GUI - Generate VFD files requested")
         self.parser.generate_vfd_files(self.file_name)
-        messagebox.showinfo("Information","VFD files generated")
+        messagebox.showinfo("Information", "VFD files generated")
         self.refresh_file_list()
 
     def refresh_file_list(self):
         """
         Clear out our file list, then refresh it
         """
-        self.files_list.delete(0,tk.END)
+        self.files_list.delete(0, tk.END)
         self.files = self.get_vfd_files() 
         for f in self.files:
             self.files_list.insert(tk.END, f)
@@ -189,7 +182,7 @@ class Window(tk.Frame):
         self.com_port["values"] = stuff
         try:
             self.com_port.current(len(ports)-1)
-        except:
+        except (Exception, ):
             pass
 
     def get_vfd_files(self):

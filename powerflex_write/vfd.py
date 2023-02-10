@@ -33,15 +33,20 @@ A successful write will move file to the completed directory.  Unsuccessful writ
 will leave the file, which will need to be inspected for a typo.  These files are typically
 auto-generated, so there shouldn't be typos unless they have been manually edited.
 """
+
+
 class Writer:
 
     def __init__(self, parent):
         self.parent = parent
 
-
         self.path = self.parent.output_dir.get()
         self.current_dir = os.path.abspath(os.getcwd() + "/" + self.path) 
         self.completed_dir = os.path.abspath(self.current_dir + '/completed')
+
+        self.callback = None
+        self.com_port = None
+        self.comm = None
 
     def write(self, callback):
 
@@ -54,11 +59,11 @@ class Writer:
             self.comm.serial.baudrate = 9600
             self.comm.serial.timeout = 0.5
             self.comm.mode = minimalmodbus.MODE_RTU
-        except:
+        except (Exception, ):
             self.parent.log.info("Writer - Failed to open {}, quitting".format(com_port))
 
-        # process all of the drive files
-        n = self._process_drives()
+        # process all the drive files
+        self._process_drives()
 
     def write_single_drive(self, drive):
 
@@ -67,9 +72,10 @@ class Writer:
 
         result = self._parse_file(p1)
 
-        if result == True:
+        if result:
             # failed to write, notify the user
-            self.parent.log.info("Writer - Failed to write to {}. Make sure there were no typo's in the file".format(drive[:-4]))
+            self.parent.log.info("Writer - Failed to write to {}. Make sure there were no typo's in the file".
+                                 format(drive[:-4]))
             retry = self._yes_or_no()
         else:
             try:
@@ -101,16 +107,17 @@ class Writer:
             while retry:
                 # prompt the user to plug into a drive
                 self.parent.log.info("Writer - Waiting to connect to {}".format(drive[:-4]))
-                messagebox.showinfo("Information","Connect to {} then press OK to continue".format(drive[:-4]))
+                messagebox.showinfo("Information", "Connect to {} then press OK to continue".format(drive[:-4]))
 
                 self.parent.log.info("Writer - Writing to {}".format(drive[:-4]))
                 p1 = os.path.abspath(self.current_dir + '/' + drive)
                 p2 = os.path.abspath(self.completed_dir + '/' + drive)
                 result = self._parse_file(p1)
 
-                if result == True:
+                if result:
                     # failed to write, notify the user
-                    self.parent.log.info("Writer - Failed to write to {}. Make sure there were no typo's in the file".format(drive[:-4]))
+                    self.parent.log.info("Writer - Failed to write to {}. Make sure there were no typo's in the file".
+                                         format(drive[:-4]))
                     retry = self._yes_or_no()
                 else:
                     try:
@@ -170,7 +177,7 @@ class Writer:
                 else:
                     s = line.split(':')
                     result = self._write_parameter(drive_model, int(s[0]), int(s[2]))
-                    if result == True:
+                    if result:
                         return True
         return False
 
@@ -186,4 +193,3 @@ class Writer:
         except Exception as e:
             self.parent.log.info("Writer - {}".format(e))
             return True
-        
