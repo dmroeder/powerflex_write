@@ -107,11 +107,10 @@ class Window(tk.Frame):
         self.frame3.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.com_lbl.grid(row=0, column=0, pady=2, sticky="e")
         self.com_port.grid(row=0, column=1, pady=2, sticky="w")
-        self.refresh_com()
+
         self.out_lbl.grid(row=1, column=0, pady=2, stick="e")
         self.output_dir.grid(row=1, column=1, pady=2, sticky="w")
         self.write_parm.grid(row=2, column=0, padx=5, pady=5)
-        self.refresh_com.grid(row=2, column=1, padx=5, pady=5)
 
         self.frame4.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.files_list.pack(fill=tk.BOTH, padx=5, pady=5)
