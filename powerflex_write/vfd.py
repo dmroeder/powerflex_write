@@ -60,7 +60,7 @@ class Writer:
             self.comm.serial.timeout = 0.5
             self.comm.mode = minimalmodbus.MODE_RTU
         except (Exception, ):
-            self.parent.log.info("Writer - Failed to open {}, quitting".format(com_port))
+            self.parent.log.info("Writer - Failed to open {}, quitting".format(self.com_port))
 
         # process all the drive files
         self._process_drives()
