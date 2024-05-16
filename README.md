@@ -27,8 +27,8 @@ completed directory.  Drives that fail will remain so that they can be corrected
 
 __Note:__ The "Generate VFD Files" was purpose written for our drive naming convention.  This feature will
 find all I/O tree modules that start with "VFD" and generate a file with just the IP address settings
-in it.  I genereally use this tool to only write the IP address settings, then I load the reset of the
-parameters from Studio5000.  In the future, I may add a entery so you can specify a prefix to search for.
+in it.  I generally use this tool to only write the IP address settings, then I load the reset of the
+parameters from Studio5000.  In the future, I may add an entry so you can specify a prefix to search for.
 
 ## Requirements
 - python 3
