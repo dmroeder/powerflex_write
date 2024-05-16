@@ -25,8 +25,7 @@ write and you will be prompted when that drive is complete.  You will then be pr
 into the next drive.  Drives that complete writing every parameter will be moved to the
 completed directory.  Drives that fail will remain so that they can be corrected.
 
-### Note
-The "Generate VFD Files" was purpose written for our drive naming convention.  This feature will
+__Note:__ The "Generate VFD Files" was purpose written for our drive naming convention.  This feature will
 find all I/O tree modules that start with "VFD" and generate a file with just the IP address settings
 in it.  I genereally use this tool to only write the IP address settings, then I load the reset of the
 parameters from Studio5000.  In the future, I may add a entery so you can specify a prefix to search for.
