@@ -57,6 +57,7 @@ class Parse:
         self.file_name = file_name
         self.prj = l5x.Project(self.file_name)
         vfds = []
+
         for m in self.prj.modules.names:
             if m.startswith("VFD"):
                 vfd_name = m

@@ -182,7 +182,7 @@ class Window(tk.Frame):
         try:
             self.com_port.current(len(ports)-1)
         except (Exception, ):
-            pass
+            self.log.info("GUI - Failed to refresh com ports")
 
     def get_vfd_files(self):
         """
