@@ -69,7 +69,6 @@ class Window(tk.Frame):
         self.out_lbl = tk.Label(self.frame3, text="Output Dir:")
         self.output_dir = tk.Entry(self.frame3, textvariable=self.output_val)
         self.write_parm = tk.Button(self.frame3, text="Write All Parameter Files", command=self.write_vfd)
-        self.refresh_com = tk.Button(self.frame3, text="Refresh COM Ports", command=self.refresh_com)
 
         self.frame4 = tk.LabelFrame(self.main, text="Files")
         self.files_list = pfw.enhanced_listbox.EnhancedListbox(self, self.frame4, selectmode="multiple")
