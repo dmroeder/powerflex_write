@@ -81,7 +81,7 @@ class Window(tk.Frame):
     def init_window(self):
         self.log.info("GUI - Initializing UI")
         # update title
-        self.main.title("Write Power-flex Parameters")
+        self.main.title("Write Power-flex Parameters - {}".format(pfw.__version__))
 
         # create a menu
         menu = tk.Menu(self.main)
