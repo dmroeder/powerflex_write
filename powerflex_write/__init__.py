@@ -1,4 +1,4 @@
-__version_info__ = (2024, 5, 16)
+__version_info__ = (2024, 5, 21)
 __version__ = '.'.join(str(x) for x in __version_info__)
 
 from powerflex_write import enhanced_listbox
